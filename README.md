@@ -20,31 +20,31 @@ docker run -p 8080:8080 flask-change
 
 The `-p` stuff above tells docker to bind the container's port 8080 to the (local)host's port 8080. If all is working corectly, you should be able to test this by curling the localhost and trying it out. The following code will call the app running in the container and ask it to make change for $1.56. 
 
-```
+```bash
 curl 127.0.0.1:8080/change/1/56
 ```
 
 Great, everything is running. Now we can move onto the fun stuff - kubernetes. First make sure k8s is running locally by running
 
-```
+```bash
 kubectl get nodes
 ```
 
 You should see the `docker-desktop` node running. Now, all of the hard stuff has been figured out for you in the `kube-hello-change.yaml` file in the repository, which defines how the cluster should be set up. One of the key takeawawys is that the build spec is going to set up 3 pods within the `docker-desktop` node, and it's going to expose the application runinng in parallel across those pods through the (local)host's port 8080. To get everything up and running, you can run `make run-kube` (that helpful `Makefile` again!), or you can act like you know and run
 
-```
+```bash
 kubectl apply -f kube-hello-change.yaml
 ```
 
 You should get a note that both the service and the deployment are running. To see the pods running, you can run
 
-```
+```bash
 kubectl get pods
 ```
 
 You should see three bright and shiny pods smiling back at you. To get more information about the service that's running you can run 
 
-```
+```bash
 kubectl describe services hello-flask-change-service
 ```
 
